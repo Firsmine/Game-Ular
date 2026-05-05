@@ -9,28 +9,31 @@
 <body>
     <div>
         <div class="startScreen">
-            <input type="text" id="playerName" placeholder="Enter your name">
+            <h2>Welcome!</h2>
+            <input type="text" id="playerName" class="inputName" placeholder="Enter your name">
             <button id="startBtn">Play Game</button>
         </div>
         <div class="container">
-        <div class="leaderBoard">
-            <h3>Leaderboard</h3>
-            <ol id="leaderboardList"></ol>
-        </div>
-        <div class="gameboard">
-            <h1>Score: <span id="score">0</span></h1>
-            <canvas width="500" height="500" id="game"></canvas>
-        </div>
-        <div class="button-action">
-            <div class="buttons">
-                <button id="up" class="btn">⬆️</button>
-                <button id="left" class="btn">⬅️</button>
-                <button id="down" class="btn">⬇️</button>
-                <button id="right" class="btn">➡️</button>
+            <div class="leaderBoard">
+                <h3>Leaderboard</h3>
+                <ol id="leaderboardList"></ol>
             </div>
-            <button id="restartBtn" class="restartBtn">Play Again</button>
-            <button id="pauseBtn">Pause</button>
-        </div>
+            <div class="gameboard">
+                <h4 id="greet" class="greet"></h4>
+                <h2>Score: <span id="score">0</span></h2>
+                <canvas width="500" height="500" id="game"></canvas>
+            </div>
+            <div class="button-action">
+                <div class="buttons">
+                    <button id="up" class="btn">⬆️</button>
+                    <button id="left" class="btn">⬅️</button>
+                    <button id="down" class="btn">⬇️</button>
+                    <button id="right" class="btn">➡️</button>
+                </div>
+                <button id="restartBtn" class="restartBtn">Play Again</button>
+                <button id="pauseBtn">Pause</button>
+                <button id="endBtn">End Game</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

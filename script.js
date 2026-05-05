@@ -1,3 +1,5 @@
+const greet = document.getElementById('greet');
+const startScreen = document.querySelector('.startScreen');
 let currentPlayerName = "";
 const playerNameInput = document.getElementById('playerName');
 const startBtn = document.getElementById('startBtn');
@@ -10,6 +12,7 @@ const left = document.getElementById('left');
 const right = document.getElementById('right');
 const pauseBtn = document.getElementById('pauseBtn');
 const restartBtn = document.getElementById('restartBtn');
+const endBtn = document.getElementById('endBtn');
 
 let gridsize = 25;
 let snake = [{ x: 10, y: 10 }];
@@ -28,6 +31,7 @@ startBtn.addEventListener('click', () => {
         return;
     }
     currentPlayerName = name;
+    startScreen.style.display = "none";
     startGame();
 })
 
@@ -39,6 +43,9 @@ function startGame(){
     scoreElement.innerText = score;
     isPaused = false;          
     pauseBtn.innerText = "Pause"
+
+    greet.innerText = `Keep up, ${currentPlayerName}!`
+    greet.style.display = "block";
 
     document.addEventListener('keydown', changeDirection);
     up.addEventListener('click', () => {
@@ -175,10 +182,14 @@ function gameOver() {
 
     pauseBtn.style.display = "none";
     restartBtn.style.display = "block";
+    endBtn.style.display = "block";
 
-    updateLeaderBoard(score);
+    updateLeaderBoard(currentPlayerName, score);
 }
 restartBtn.addEventListener('click', startGame);
+endBtn.addEventListener('click', () => {
+    window.location.reload();
+} )
 
 function updateLeaderBoard(playerName, currentScore){
     let leaderboard = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
@@ -189,18 +200,14 @@ function updateLeaderBoard(playerName, currentScore){
     leaderboard = leaderboard.slice(0, 5);
 
     localStorage.setItem('snakeLeaderboard', JSON.stringify(leaderboard));
-
 }
 
 function displayLeaderboard(){
     const leaderboard = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
     const listElement = document.getElementById('leaderboardList');
 
-    scoreList.innerHTML = leaderboard
+    listElement.innerHTML = leaderboard
         .map(entry => `<li>${entry.name}: ${entry.score}</li>`)
         .join('');
 }
-
 displayLeaderboard();
-
-startGame()
