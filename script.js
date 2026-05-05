@@ -1,3 +1,6 @@
+let currentPlayerName = "";
+const playerNameInput = document.getElementById('playerName');
+const startBtn = document.getElementById('startBtn');
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
@@ -6,6 +9,7 @@ const down = document.getElementById('down');
 const left = document.getElementById('left');
 const right = document.getElementById('right');
 const pauseBtn = document.getElementById('pauseBtn');
+const restartBtn = document.getElementById('restartBtn');
 
 let gridsize = 25;
 let snake = [{ x: 10, y: 10 }];
@@ -17,8 +21,25 @@ let gameSpeed = 200;
 let gameInterval;
 let isPaused = false;
 
+startBtn.addEventListener('click', () => {
+    const name = playerNameInput.value.trim();
+    if (name === ""){
+        alert("Please enter your name");
+        return;
+    }
+    currentPlayerName = name;
+    startGame();
+})
+
 function startGame(){
-    createFood();
+    snake = [{ x: 10, y: 10 }]; 
+    dx = 0;                    
+    dy = 0;
+    score = 0;                 
+    scoreElement.innerText = score;
+    isPaused = false;          
+    pauseBtn.innerText = "Pause"
+
     document.addEventListener('keydown', changeDirection);
     up.addEventListener('click', () => {
         if (dy !== 1) { dx = 0; dy = -1; }
@@ -33,8 +54,14 @@ function startGame(){
         if (dx !== -1) { dx = 1; dy = 0; }
     });
     pauseBtn.addEventListener('click', paused)
-
+    
+    createFood();
+    restartBtn.style.display = "none";
+    
+    clearInterval(gameInterval);
     gameInterval = setInterval(gameLoop, gameSpeed);
+    pauseBtn.style.display = "block";
+
 }
 
 function gameLoop() {
@@ -84,15 +111,15 @@ function changeDirection(event){
     if ((key === 'arrowup' || key === 'w') && dy !== 1){
         dx = 0; dy = -1;
     }
-    // panah atas atau s
+    // panah bawah atau s
     else if ((key === 'arrowdown' || key === 's') && dy !== -1){
         dx = 0; dy = 1;
     }
-    // panah atas atau a
+    // panah kiri atau a
     else if ((key === 'arrowleft' || key === 'a') && dx !== 1){
         dx = -1; dy = 0;
     }
-    // panah atas atau d
+    // panah kanan atau d
     else if ((key === 'arrowright' || key === 'd') && dx !== -1){
         dx = 1; dy = 0;
     }
@@ -141,8 +168,39 @@ function checkGameOver(){
 
 function gameOver() {
     clearInterval(gameInterval);
-    alert('Game Over! Skor Anda: ' + score);
-    document.location.reload();
+    context.fillStyle = "rgba(0, 0, 0, 0.5)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    Object.assign(context, {fillStyle: "white", font: "30px Arial", textAlign: "center"})
+    context.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+
+    pauseBtn.style.display = "none";
+    restartBtn.style.display = "block";
+
+    updateLeaderBoard(score);
 }
+restartBtn.addEventListener('click', startGame);
+
+function updateLeaderBoard(playerName, currentScore){
+    let leaderboard = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+
+    leaderboard.push({name: playerName, score: currentScore});
+
+    leaderboard.sort((a, b) => b.score - a.score);
+    leaderboard = leaderboard.slice(0, 5);
+
+    localStorage.setItem('snakeLeaderboard', JSON.stringify(leaderboard));
+
+}
+
+function displayLeaderboard(){
+    const leaderboard = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+    const listElement = document.getElementById('leaderboardList');
+
+    scoreList.innerHTML = leaderboard
+        .map(entry => `<li>${entry.name}: ${entry.score}</li>`)
+        .join('');
+}
+
+displayLeaderboard();
 
 startGame()

@@ -11,12 +11,25 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.startScreen {
+    margin-top: 100px;
+    display: flex;    
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     text-align: center;
+}
+
+.leaderBoard {
+    margin-right: 90px;
 }
 
 h1 {
@@ -57,14 +70,40 @@ button{
 #down {grid-area: down;}
 #right {grid-area: right;}
 
+.btn {
+    background-color: #aea8ff;
+}
+
 #pauseBtn {
     width: 230px;
     padding: 0 20px;
     margin: 20px auto;
     margin-top: 30px;
-    grid-area: unset; /* Keluar dari grid D-pad */
+    grid-area: unset;
     background: #f39c12;
 }
 #pauseBtn:hover {
     background: #e67e22;
+}
+
+.restartBtn{
+    display: none;
+    color: white;
+    width: 230px;
+    padding: 0 20px;
+    margin: 20px auto;
+    margin-top: 30px;
+    grid-area: unset;
+    background: #1255f3;
+}
+
+#startBtn {
+    color: black;
+    width: 150px;
+    height: 40px;
+    padding: 0 20px;
+    margin: 20px auto;
+    margin-top: 30px;
+    font-size: 20px;
+    background: #73ed93;
 }
